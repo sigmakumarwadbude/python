@@ -1,0 +1,92 @@
+def analyze(value):
+    """Analyze and display type and details of the value."""
+
+    print("\n🔍 Analysis Result")
+    print("-" * 40)
+
+    print(f"Value : {value}")
+    print(f"Type  : {type(value).__name__}")
+
+    # Extra insights
+    if isinstance(value, str):
+        print(f"Length: {len(value)}")
+        print(f"Upper : {value.upper()}")
+
+    elif isinstance(value, int):
+        print(f"Even  : {value % 2 == 0}")
+
+    elif isinstance(value, float):
+        print(f"Rounded: {round(value)}")
+
+    elif isinstance(value, list):
+        print(f"Length: {len(value)}")
+        print(f"First : {value[0] if value else 'Empty'}")
+
+    elif isinstance(value, dict):
+        print(f"Keys  : {list(value.keys())}")
+
+    elif isinstance(value, set):
+        print(f"Length: {len(value)}")
+
+    elif value is None:
+        print("This is a None value")
+
+    print("-" * 40)
+
+
+def parse_input(user_input):
+    """Try to convert input into correct Python type."""
+
+    # Try int
+    try:
+        return int(user_input)
+    except ValueError:
+        pass
+
+    # Try float
+    try:
+        return float(user_input)
+    except ValueError:
+        pass
+
+    # Try boolean
+    if user_input.lower() in ["true", "false"]:
+        return user_input.lower() == "true"
+
+    # Try list (simple)
+    if user_input.startswith("[") and user_input.endswith("]"):
+        return user_input.strip("[]").split(",")
+
+    # Try dict (very basic)
+    if user_input.startswith("{") and user_input.endswith("}"):
+        return {"raw": user_input}
+
+    # Try None
+    if user_input.lower() == "none":
+        return None
+
+    # Default → string
+    return user_input
+
+
+def main():
+    print("🧠 Type Analyzer Tool")
+    print("Type 'exit' to quit\n")
+
+    while True:
+        user_input = input("Enter a value: ").strip()
+
+        if user_input.lower() == "exit":
+            print("Goodbye 👋")
+            break
+
+        if not user_input:
+            print("❌ Input cannot be empty")
+            continue
+
+        value = parse_input(user_input)
+        analyze(value)
+
+
+if __name__ == "__main__":
+    main()
